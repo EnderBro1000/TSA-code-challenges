@@ -3,14 +3,6 @@ import sys
 # IMPORTANT: Requires python 3.0+
 """***READ ABOVE***"""
 
-def printMatrix(mat):
-    out = ""
-    for idxi, i in enumerate(mat):
-        for idxj, j in enumerate(i):
-            out += f"{mat[idxi][idxj]} "
-        out += '\n'
-    print(out)
-
 def inputToTestCaseMatrix(file):
     testCases = int(file[0])
     file = file[1:] # Remove testCase line
