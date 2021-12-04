@@ -1,20 +1,18 @@
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class WordWorm {
 
     public static class TestCase {
-        public char[][] wordMap;
-        public String[] wordBank;
-        public boolean[] wordFound; // boolean list in the same order as wordBank list
+        public char[][] wordMap; // map of letters, to find words in
+        public String[] wordBank; // bank of words to search for
+        public boolean[] wordFound; // whether or not word at the same index in wordBank is found. boolean list must be in the same order as wordBank list
 
         public TestCase(char[][] wordMap, String[] wordBank) {
             this.wordMap = wordMap;
             this.wordBank = wordBank;
 
+            // initialize wordFound as a false-filled array.
             wordFound = new boolean[wordBank.length];
             for (int i = 0; i < wordFound.length; i++) {
                 wordFound[i] = false;
@@ -53,6 +51,7 @@ public class WordWorm {
 
             //System.out.println("Search spawned\tat row:" + row + " col:" + col);
 
+            // directions:
             // row - 1  & col       -> up
             // row + 1  & col       -> down
 
@@ -64,16 +63,16 @@ public class WordWorm {
             // row + 1 & col - 1    -> downLeft
             // row + 1 & col + 1    -> downRight            
 
-            // domain:
+            // target domain:
             // 0 <= row + i < wordMap.length
             // 0 <= col + j < wordMap[0].length
 
 
-            for (int i = -1; i <= 1; i++) { // loop surrounding rows
+            for (int i = -1; i <= 1; i++) { // loop surrounding rows (inclusive)
                 int targetRow = row + i;
 
                 if (targetRow >= 0 && targetRow < wordMap.length) { // if rows in domain
-                    for (int j = -1; j <= 1; j++) { // loop surrounding cols
+                    for (int j = -1; j <= 1; j++) { // loop surrounding cols (inclusive)
                         if (!(i == 0 && j == 0)) { // if target is moved from current position
                             int targetCol = col + j;
     
@@ -97,38 +96,12 @@ public class WordWorm {
                 if (wordFound[i]) System.out.println(wordBank[i]);
             }
         }
-
-        // toString() used for debugging
-        public String toString() {
-            String out = "\n";
-            // wordMap
-            for (int row = 0; row < wordMap.length; row++) {
-                out += englishList(charConvert(wordMap[row]), "", " ", "") + "\n";
-            }
-
-            out += Arrays.toString(wordBank); // word bank
-            return out + "\n";
-        }
-
-        // convert primitive char list to Character object list
-        private static Character[] charConvert(char[] charArray) {
-            Character[] objectArray = new Character[charArray.length];
-            for (int i = 0; i < objectArray.length; i++) {
-                objectArray[i] = (Character)charArray[i];
-            }
-            return objectArray;
-        }
     }
 
     public static void main(String[] args) {
         String[] lines = inLinesToString(); // take standard input
-        //String[] lines = fileLinesToString("word-worm-input.txt");
 
         TestCase[] testCases = getTestCases(lines); // parse the input
-
-        // for (TestCase testCase : testCases) {
-        //     System.out.println(testCase);
-        // }
 
         for (TestCase testCase : testCases) { 
             testCase.solve(); // solve the test case
@@ -184,48 +157,6 @@ public class WordWorm {
     // standard input: converts System.in input (file) to a String array, where each element is one line in the file.
     public static String[] inLinesToString() {
         Scanner input = new Scanner(System.in);
-        ArrayList<String> lines = new ArrayList<String>();
-        while(input.hasNextLine()) {
-            lines.add(input.nextLine());
-        }
-        input.close();
-        String[] linesArray = new String[lines.size()];
-        linesArray = lines.toArray(linesArray);
-        return linesArray;
-    }
-
-    // turns a list into a String with formatting: StartItemSplitItemEnd. Used for debugging
-    public static <T> String englishList(T[] list, String start, String split, String end) {
-        String str = start;
-
-        for (int i = 0; i < list.length; i++) {
-            str += list[i].toString();
-            if (i != list.length-1) {
-                str += split;
-            }
-        }
-        str += end;
-
-        return str;
-    }
-
-    // gets a scanner from a File at path. Used for debugging
-    public static Scanner getScanner(String path) {
-        try{
-            return new Scanner(new File(path));
-        } catch (FileNotFoundException e){
-            System.out.println("EXCEPTION: File not found at path (when constructing scanner): " + path);
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.out.println("EXCEPTION: getScanner exception");
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    // converts a File at path to a String array, where each element is one line in the file. Used for debugging
-    public static String[] fileLinesToString(String path) {
-        Scanner input = getScanner(path);
         ArrayList<String> lines = new ArrayList<String>();
         while(input.hasNextLine()) {
             lines.add(input.nextLine());
