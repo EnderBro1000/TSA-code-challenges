@@ -1,18 +1,18 @@
 import sys
 import math
 
-# file = sys.stdin.read()
-file = """
-10
-5 4 -4
--4 4 5
-200
-1 1 -100
--35 -100 -100
-30
--15.0 15.0 15
-15 -15.0 -15
-"""
+file = sys.stdin.read()
+# file = """
+# 10
+# 5 4 -4
+# -4 4 5
+# 200
+# 1 1 -100
+# -35 -100 -100
+# 30
+# -15.0 15.0 15
+# 15 -15.0 -15
+# """
 file = file.split('\n') # splits lines into list of strings
 file = [i for i in file if i != ""] # removes blank lines
 
